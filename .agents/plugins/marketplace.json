@@ -1,0 +1,12 @@
+{
+  "name": "twitch-copilot-local",
+  "interface": { "displayName": "Twitch Copilot" },
+  "plugins": [
+    {
+      "name": "twitch-copilot",
+      "source": { "source": "local", "path": "./" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_USE" },
+      "category": "Productivity"
+    }
+  ]
+}

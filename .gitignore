@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build and distribution
+dist/
+*.zip
+*.tar.gz
+
+# Credentials & secrets
+.env
+.env.*
+!*.example
+credentials.json
+twitch-credentials.json
+*.pem
+*.key
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Test coverage & scratch
+coverage/
+scratch/
+.system_generated/
+
+# Local implementation prompts and review scratch notes
+TASK.md
+AUTH_TASK.md
+REVIEW_FIXES.md

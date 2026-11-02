@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "twitch-copilot": {
+      "command": "node",
+      "args": [
+        "./build/server.cjs"
+      ],
+      "cwd": ".",
+      "env_vars": [
+        "TWITCH_CLIENT_ID",
+        "TWITCH_ACCESS_TOKEN",
+        "TWITCH_COPILOT_CONFIG",
+        "XDG_CONFIG_HOME"
+      ]
+    }
+  }
+}

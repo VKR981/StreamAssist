@@ -1,0 +1,20 @@
+{
+  "name": "twitch-copilot",
+  "version": "0.2.1",
+  "description": "Connect Twitch chat to Codex locally. Collect questions, change filters in natural language, and send streamer-authorized replies.",
+  "author": {
+    "name": "Twitch Copilot Contributors"
+  },
+  "license": "MIT",
+  "mcpServers": "./.mcp.json",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Twitch Copilot",
+    "shortDescription": "Your Twitch chat, inside Codex",
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Connect my Twitch channel and collect questions about my setup",
+      "Try Twitch Copilot in demo mode"
+    ]
+  }
+}

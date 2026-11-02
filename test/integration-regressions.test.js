@@ -157,10 +157,10 @@ test('MCP: missing credentials lead to browser sign-in, approval then connects w
     async connect(){this.connected=true;}
     disconnect(){this.connected=false;}
   }
-  const call=await session(t,{loadCredentials:()=>creds,authFlow,validateToken:async()=>({login:'streamer',userId:'42',scopes:['user:read:chat','user:write:chat']}),EventSubClient:LocalConnection});
+  const call=await session(t,{loadCredentials:()=>creds,authFlow,validateToken:async()=>({login:'streamer',userId:'42',scopes:['user:read:chat','user:write:chat','moderator:manage:chat_messages','moderator:manage:banned_users']}),EventSubClient:LocalConnection});
   const started=await call('connect_channel');assert.equal(started.status,'authorization_required');assert.match(started.verification_url,/twitch.tv/);
-  assert.equal((await call('complete_twitch_login')).status,'authorized');
-  const connected=await call('connect_channel');assert.equal(connected.status,'connected');assert.equal(connected.channel,'streamer');
+  const approval=await call('complete_twitch_login');assert.equal(approval.status,'authorized');assert.equal(approval.connected,true);
+  const connected=approval.connection;assert.equal(connected.status,'connected');assert.equal(connected.channel,'streamer');
   assert.ok(!JSON.stringify(connected).includes('secret-local-only'));
   assert.equal((await call('connection_status')).reply_policy.enabled,false);
 });
@@ -196,4 +196,33 @@ test('Switching to !ask filtering clears an earlier questions-only restriction',
   assert.deepEqual(status.chat_filter.include_keywords,[]);
   await call('connect_channel',{demo:true});
   const read=await call('read_chat');assert.ok(read.messages.some(m=>m.text.startsWith('!ask')));
+});
+
+test('MCP: chat-only credentials trigger moderation approval before watching, then connect automatically', async t => {
+  let approved = false; let starts = 0;
+  const authFlow = {
+    begin: async () => { starts++; return { status: 'authorization_required', verification_url: 'https://www.twitch.tv/activate' }; },
+    complete: async () => { approved = true; return { status: 'authorized', login: 'streamer', user_id: '42' }; },
+    status: () => ({ status: 'not_started' }), cancel: () => ({ status: 'cancelled' }),
+  };
+  class LocalConnection {
+    constructor() { this.connected = false; }
+    onStatusChange() {}
+    async connect() { this.connected = true; }
+    disconnect() { this.connected = false; }
+  }
+  const call = await session(t, {
+    authFlow, loadCredentials: () => ({ clientId: 'fixture', accessToken: 'private' }),
+    validateToken: async () => ({ login: 'streamer', userId: '42', scopes: ['user:read:chat', 'user:write:chat', ...(approved ? ['moderator:manage:chat_messages', 'moderator:manage:banned_users'] : [])] }),
+    EventSubClient: LocalConnection,
+  });
+  const initial = await call('connect_channel');
+  assert.equal(initial.status, 'authorization_required');
+  assert.deepEqual(initial.missing_scopes, ['moderator:manage:chat_messages', 'moderator:manage:banned_users']);
+  assert.equal((await call('connection_status')).connected, false);
+  assert.equal((await call('complete_twitch_login')).connected, true);
+  assert.equal((await call('connection_status')).connected, true);
+  assert.equal(starts, 1);
+  await call('disconnect'); approved = false;
+  assert.equal((await call('connect_channel', { moderation: false })).status, 'connected');
 });

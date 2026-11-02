@@ -2,7 +2,7 @@ import { validateToken } from './auth.js';
 import { saveCredentials, getCredentialsPath } from '../config/credentials.js';
 
 const DEFAULT_CLIENT_ID = 'o9sm5e0yo9i7bi7250k2cvhun61dsx';
-const REQUIRED_SCOPES = 'user:read:chat user:write:chat';
+const REQUIRED_SCOPES = 'user:read:chat user:write:chat moderator:manage:chat_messages moderator:manage:banned_users';
 const DEVICE_ENDPOINT = 'https://id.twitch.tv/oauth2/device';
 const TOKEN_ENDPOINT = 'https://id.twitch.tv/oauth2/token';
 const GRANT_TYPE = 'urn:ietf:params:oauth:grant-type:device_code';

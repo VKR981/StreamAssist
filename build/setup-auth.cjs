@@ -111,7 +111,7 @@ function saveCredentials(clientId, accessToken, customPath, metadata = {}) {
 // src/twitch/auth.js
 var TWITCH_VALIDATE_URL = "https://id.twitch.tv/oauth2/validate";
 async function validateToken(clientId, accessToken, options = {}) {
-  const timeoutMs = options.timeoutMs || 1e4;
+  const timeoutMs = options.timeoutMs || 3e4;
   let response;
   try {
     response = await fetch(TWITCH_VALIDATE_URL, {

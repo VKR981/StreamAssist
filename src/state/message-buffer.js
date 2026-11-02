@@ -19,6 +19,8 @@ export class MessageBuffer {
     this.botUserId = options.botUserId || null;
     this.botLogin = options.botLogin ? options.botLogin.toLowerCase() : null;
 
+    this.allowOwnMessages = Boolean(options.allowOwnMessages);
+    this.outgoingTexts = new Map();
     this.messages = [];
     this.currentSeq = 0;
     this.oldestSeq = 1;
@@ -55,9 +57,18 @@ export class MessageBuffer {
     }
   }
 
+  suppressOutgoingText(text) {
+    const now = Date.now();
+    for (const [key, expiry] of this.outgoingTexts) if (expiry <= now) this.outgoingTexts.delete(key);
+    this.outgoingTexts.set(String(text).trim(), now + 120000);
+    while (this.outgoingTexts.size > 100) this.outgoingTexts.delete(this.outgoingTexts.keys().next().value);
+  }
+
   isEcho(chatterId, chatterLogin, text = '') {
     // Streamers can test the assistant from their own account. Outgoing
     // assistant replies cannot use this reserved prefix (ReplyPolicyManager).
+    const isOwn = (this.botUserId && chatterId && String(chatterId) === this.botUserId) || (this.botLogin && chatterLogin && chatterLogin.toLowerCase() === this.botLogin);
+    if (this.allowOwnMessages && isOwn) return (this.outgoingTexts.get(String(text).trim()) || 0) > Date.now();
     const isCommand = /^\s*!ask(?:\s|$)/i.test(text);
     if (this.botUserId && chatterId && String(chatterId) === this.botUserId) {
       return !isCommand;
@@ -234,6 +245,7 @@ export class MessageBuffer {
 
   reset() {
     this.clearWaiters('Buffer reset');
+    this.outgoingTexts.clear();
     this.messages = [];
     this.currentSeq = 0;
     this.oldestSeq = 1;

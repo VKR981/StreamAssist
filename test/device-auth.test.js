@@ -22,7 +22,7 @@ function privateValuesAbsent(value) {
 test('Device auth: starts one flow with public client ID and never reveals device token',async()=>{
   const {flow,requests}=fixture();
   const started=await flow.begin();assert.equal(started.status,'authorization_required');assert.match(started.verification_url,/twitch.tv\/activate/);
-  assert.equal(requests[0].form.get('client_id'),'fixture-client');assert.equal(requests[0].form.get('scopes'),'user:read:chat user:write:chat');
+  assert.equal(requests[0].form.get('client_id'),'fixture-client');assert.equal(requests[0].form.get('scopes'),'user:read:chat user:write:chat moderator:manage:chat_messages moderator:manage:banned_users');
   assert.equal(requests[0].form.has('client_secret'),false);
   await flow.begin();assert.equal(requests.length,1);privateValuesAbsent(started);privateValuesAbsent(flow.status());
 });

@@ -1,6 +1,6 @@
 {
   "name": "twitch-copilot",
-  "version": "0.2.1",
+  "version": "0.3.5",
   "description": "Local Twitch Copilot plugin for OpenAI Codex with MCP integration",
   "type": "module",
   "main": "build/server.cjs",

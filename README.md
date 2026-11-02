@@ -180,3 +180,10 @@ Suggested video: 20 seconds for the problem, 60 seconds for live chat filtering,
 You can type `!ask hello` from the same Twitch account used to authorize the plugin. Explicit !ask commands are accepted; ordinary messages from that account remain suppressed as potential bot echoes. Outgoing assistant replies cannot begin with !ask, preventing self-reply loops. A plain `hi` is not matched by an !ask filter.
 
 Changing set_chat_filter replaces the previous rules, so switching from questions-only to !ask also removes the old question restriction. Codex must be in an active watch session and the streamer must explicitly enable replies before any public answer is sent. Installation and authorization alone do not start an autonomous always-on agent.
+
+
+### Moderation
+Version 0.3.0 adds deletion of a specific message, timeouts, bans, and unbans. Sign in again to grant moderation scopes, connect, and tell Codex which actions to enable and the rules to apply. Example: “Enable deletion only; delete messages containing MODERATION_DEMO for this test.” Send the test from a separate ordinary viewer account. Codex must be actively watching. Moderation resets on disconnect; demo mode only simulates actions. Natural-language decisions are made by the active Codex session; no separate classifier or autonomous moderation worker is included.
+
+### Automatic startup (0.3.2)
+Ask Codex to use Twitch Copilot with the streamer instruction file. Startup checks chat and moderation permissions by default and requests Twitch approval if needed. Completing approval automatically connects the channel; Codex then applies the already authorized instructions and starts the watch without a separate reconnect prompt. An explicitly chat-only session can use connect_channel(moderation=false). Twitch consent still requires the streamer’s approval.

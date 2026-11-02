@@ -11,11 +11,11 @@ const TWITCH_USERS_URL = 'https://api.twitch.tv/helix/users';
  * @param {string} clientId
  * @param {string} accessToken
  * @param {object} [options]
- * @param {number} [options.timeoutMs=10000]
+ * @param {number} [options.timeoutMs=30000]
  * @returns {Promise<{ userId: string, login: string, clientId: string, scopes: string[], expiresIn: number }>}
  */
 export async function validateToken(clientId, accessToken, options = {}) {
-  const timeoutMs = options.timeoutMs || 10000;
+  const timeoutMs = options.timeoutMs || 30000;
 
   let response;
   try {
@@ -89,7 +89,7 @@ export async function validateToken(clientId, accessToken, options = {}) {
  * @returns {Promise<{ id: string, login: string, displayName: string }>}
  */
 export async function getBroadcasterByLogin(clientId, accessToken, login, options = {}) {
-  const timeoutMs = options.timeoutMs || 10000;
+  const timeoutMs = options.timeoutMs || 30000;
   const cleanLogin = login.replace(/^#/, '').toLowerCase().trim();
 
   let response;

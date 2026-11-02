@@ -245,3 +245,6 @@ Fixed blanket own-account suppression to accept explicit streamer !ask commands 
 
 
 Live v0.2.1 verification succeeded: the authenticated streamer sent !ask hello from their own account, Codex received it through EventSub, and a user-authorized reply was posted through the installed plugin. Twitch returned is_sent=true and a message ID. This verifies actual incoming command handling and outgoing delivery, beyond synthetic tests. The bounded test connection was then stopped; continued interaction uses an active Codex watch session.
+
+## Moderation (0.3.0)
+Added separate policy-gated tools for deletion, timeout, ban, and unban; authorization requests include moderation scopes. All 58 tests pass, including API target/payload validation, missing scopes, rate limiting, failed receipts, and policy reset. Version 0.3.0 installed locally. Live moderation still requires browser approval and a viewer-account test.

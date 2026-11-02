@@ -1,6 +1,6 @@
 # Demo video plan — target 2 minutes 45 seconds
 
-Record your own Codex and Twitch windows side by side. Use real chat; do not substitute the synthetic demo for the Twitch interaction. Use the updated installed plugin (0.2.1). The approval flow is already complete for the current account, so you can show connection status instead of repeating authorization. Keep access and refresh tokens out of footage.
+Record your own Codex and Twitch windows side by side. Use real chat; do not substitute the synthetic demo for the Twitch interaction. Use the updated installed plugin (0.3.0). Moderation requires approval of the new scopes. Complete Twitch sign-in before recording, then show connection status. Keep access and refresh tokens out of footage.
 
 ## 0:00–0:15 — Introduce the problem
 
@@ -59,3 +59,5 @@ Show the source repository or installation guide and say:
 “Install the plugin, authorize Twitch, and tell Codex what to watch. It runs during an active Codex watch session and needs no separate hosted dashboard.”
 
 Stop before three minutes. Upload to YouTube as Public and use its direct video link in Devpost. An unlisted video does not meet the current rules' public-visibility wording.
+
+Optional moderation segment: instruct Codex “Enable deletion only for messages containing MODERATION_DEMO.” Post MODERATION_DEMO from an ordinary viewer account, have Codex delete that exact message, and show the confirmed result. Do not claim live moderation until this test succeeds.

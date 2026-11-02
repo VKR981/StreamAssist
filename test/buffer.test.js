@@ -163,3 +163,13 @@ test('Buffer: clearWaiters settles with disconnected reason', async () => {
   assert.equal(res.reason, 'Connection reset by test');
   assert.equal(res.messages.length, 0);
 });
+
+test('Natural streamer chat passes while outgoing replies are suppressed before EventSub echo arrives', () => {
+ const b = new MessageBuffer({ botUserId: '1', botLogin: 'owner', allowOwnMessages: true });
+ assert.equal(b.push({ id: 'question', chatterId: '1', text: 'What mouse is that?' }).accepted, true);
+ assert.equal(b.push({ id: 'ad', chatterId: '1', text: 'buy followers at example.invalid' }).accepted, true);
+ b.suppressOutgoingText('Our demo mouse is a Logitech.');
+ assert.equal(b.push({ id: 'echo', chatterId: '1', text: 'Our demo mouse is a Logitech.' }).accepted, false);
+ assert.equal(b.push({ id: 'viewer', chatterId: '2', text: 'Our demo mouse is a Logitech.' }).accepted, true);
+ b.reset();assert.equal(b.outgoingTexts.size,0);
+});

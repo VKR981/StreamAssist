@@ -100,15 +100,15 @@ export class EventSubClient {
       };
       this._cancelConnect = () => finishReject(new Error('Connection cancelled by streamer.'));
 
-      // Finite handshake timeout (10 seconds)
+      // Allow transport setup plus the separately bounded subscription request.
       this.handshakeTimeoutTimer = setTimeout(() => {
-        finishReject(new Error('EventSub connection handshake timed out after 10 seconds.'));
+        finishReject(new Error(`EventSub connection timed out after 30 seconds (${this.sessionId ? 'creating chat subscription' : 'waiting for Twitch WebSocket welcome'}). Saved authorization remains valid; no new sign-in is needed.`));
         try {
           this.ws?.close(4001, 'Handshake timeout');
         } catch {
           // ignore
         }
-      }, 10000);
+      }, 30000);
 
       if (typeof this.handshakeTimeoutTimer.unref === 'function') {
         this.handshakeTimeoutTimer.unref();

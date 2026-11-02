@@ -1,6 +1,6 @@
 {
   "name": "twitch-copilot",
-  "version": "0.2.1",
+  "version": "0.3.5",
   "description": "Connect Twitch chat to Codex locally. Collect questions, change filters in natural language, and send streamer-authorized replies.",
   "author": {
     "name": "Twitch Copilot Contributors"
